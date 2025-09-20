@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Hacker Prank</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: black;
+    font-family: monospace;
+    color: #00ff00;
+  }
+
+  #matrix {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    font-size: 16px;
+    line-height: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    white-space: nowrap;
+    user-select: none;
+    opacity: 0.5;
+  }
+
+  .char {
+    animation: flicker 1s infinite;
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  #figure {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 40vw;
+    max-width: 400px;
+    opacity: 0.7;
+    z-index: 2;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  #message-container {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    text-align: center;
+  }
+
+  #message {
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00ff00;
+  }
+
+  #green-light {
+    margin: 20px auto 0;
+    width: 60px;
+    height: 60px;
+    background-color: #00ff00;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #00ff00;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="matrix"></div>
+
+<img id="figure" src="https://i.imgur.com/xUqQO9A.png" alt="Kapuze">
+
+<div id="message-container">
+  <div id="message">Du wurdest gehackt!</div>
+  <div id="green-light"></div>
+</div>
+
+<script>
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()-_=+<>?";
+  const matrix = document.getElementById('matrix');
+  const columns = Math.floor(window.innerWidth / 10);
+  const rows = Math.floor(window.innerHeight / 18);
+
+  function randomChar() {
+    return chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  function createMatrix() {
+    matrix.innerHTML = '';
+    for (let i = 0; i < columns * rows; i++) {
+      const span = document.createElement('span');
+      span.textContent = randomChar();
+      span.className = 'char';
+      matrix.appendChild(span);
+    }
+  }
+
+  function updateMatrix() {
+    const spans = matrix.querySelectorAll('span.char');
+    spans.forEach(span => {
+      if (Math.random() > 0.9) {
+        span.textContent = randomChar();
+      }
+    });
+  }
+
+  createMatrix();
+  setInterval(updateMatrix, 100);
+</script>
+
+</body>
+</html>
